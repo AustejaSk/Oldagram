@@ -2,40 +2,72 @@ import { posts } from '/dataTransfer.js'
 
 const mainContainer = document.getElementById("main-container")
 
+
+document.addEventListener('click', function(e){
+    if (e.target.dataset.like){
+        handleLikeClick(e.target.dataset.like)
+    }
+})
+
+document.addEventListener('dblclick', function(e){
+    if (e.target.dataset.likeImg){
+        handleLikeClick(e.target.dataset.likeImg)
+    }
+})
+
+function handleLikeClick(postId){
+    const targetPostObj = posts.filter(function(post){
+        return post.id === postId
+    })[0]
+    if (targetPostObj.isLiked){
+        targetPostObj.likes--
+    }
+    else {
+        targetPostObj.likes++
+    }
+    targetPostObj.isLiked = !targetPostObj.isLiked
+    renderPosts()
+}
+
+
 function renderPosts(){
     mainContainer.innerHTML = ``
-    for (let i = 0; i < posts.length; i++){
+    for (let post of posts){
         let postContent = `
-            <section class="container">
+            <section class="container" id="${post.id}">
                     
             <div class="user-info">
-                    <img class="avatar" src=${posts[i].avatar}>
+                    <img class="avatar" src="${post.avatar}">
                     <div>
-                        <h1 class="name">${posts[i].name}</h1>
-                        <h2 class="location">${posts[i].location}</h2>
+                        <h1 class="name">${post.name}</h1>
+                        <h2 class="location">${post.location}</h2>
                     </div>
             </div>
             
-            <img class="container" id="post-img" src=${posts[i].post}>
+            <img class="container" id="post-img" src="${post.post}" data-like-img="${post.id}">
             
             <div class="engagement-section">
                 <div class="icons">
-                    <img id="heart-icon" src="images/icon-heart.png">
-                    <img id="comment-icon" src="images/icon-comment.png">
-                    <img id="dm-icon" src="images/icon-dm.png">
+                    <img class="heart-icon" src="images/icon-heart.png" data-like="${post.id}">
+                    <img class="comment-icon" src="images/icon-comment.png">
+                    <img class="dm-icon" src="images/icon-dm.png">
                 </div>
-                <p id="like-count-el">${posts[i].likes} likes</p>
+                <p class="like-count-el">${post.likes} likes</p>
                 <p class="caption-section">
-                    <span class="username">${posts[i].username}</span>
-                    <span class="caption">${posts[i].comment}</span>
+                    <span class="username">${post.username}</span>
+                    <span class="caption">${post.comment}</span>
                 </p>
             </div>`
-            if (i < posts.length - 1){
+
+            const lastPost = posts[posts.length - 1]
+
+            if (post != lastPost){
                 postContent += `<div class="grey-space"></div>`
             }
             postContent += `</section>`
             mainContainer.innerHTML += postContent
     }
 }
+
 
 renderPosts()
