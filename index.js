@@ -26,13 +26,22 @@ function handleLikeClick(postId){
         targetPostObj.likes++
     }
     targetPostObj.isLiked = !targetPostObj.isLiked
-    renderPosts()
+    render()
 }
 
 
-function renderPosts(){
+function getPostsHtml(){
+
     mainContainer.innerHTML = ``
+
     for (let post of posts){
+
+        let likeIconClass = ''
+
+        if (post.isLiked){
+            likeIconClass = 'liked'
+        }
+
         let postContent = `
             <section class="container" id="${post.id}">
                     
@@ -48,7 +57,7 @@ function renderPosts(){
             
             <div class="engagement-section">
                 <div class="icons">
-                    <img class="heart-icon" src="images/icon-heart.png" data-like="${post.id}">
+                    <img class="heart-icon ${likeIconClass}" src="images/icon-heart.png" data-like="${post.id}">
                     <img class="comment-icon" src="images/icon-comment.png">
                     <img class="dm-icon" src="images/icon-dm.png">
                 </div>
@@ -69,5 +78,8 @@ function renderPosts(){
     }
 }
 
+function render(){
+    getPostsHtml()
+}
 
-renderPosts()
+render()

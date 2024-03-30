@@ -93,6 +93,10 @@ p {
     width: 23px;
 }
 
+.liked {
+    filter: opacity(0.5) drop-shadow(0 0 0 #FF0000)
+}
+
 .icons img:hover,
 .icons img:focus {
     filter: opacity(0.5) drop-shadow(0 0 0 #EDEDED)
